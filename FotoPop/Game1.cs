@@ -19,6 +19,7 @@ namespace FotoPop
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont title;
+        SpriteFont sm;
         // The dimensions of the viewport
         Rectangle screenRect;
 
@@ -95,6 +96,7 @@ namespace FotoPop
 
             // Load font
             title = this.Content.Load<SpriteFont>("Fonts/title");
+            sm = this.Content.Load<SpriteFont>("Fonts/sm");
 
             loadLevel("City");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
