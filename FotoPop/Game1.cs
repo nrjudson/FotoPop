@@ -247,12 +247,6 @@ namespace FotoPop
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
 
-            // Draw the circle that goes over the photo 
-            // (Examples for now) (The unscaled selfie image is 660 x 371)
-            // TODO: Move some of this logic to UPDATE
-            spriteBatch.DrawCircle(getCircle(0, 0), 100, Color.White);
-            spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
-            spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
 
 
             // Draw the rectangle that shows how much time is left
@@ -407,6 +401,11 @@ namespace FotoPop
             int fotoXPos = (int)(((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
+
+            // Draw the circle that goes over the photo
+            //draw circle on photos.objectives.x and photos.objectives.y
+        
+
         }
 
 

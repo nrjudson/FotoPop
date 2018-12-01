@@ -123,7 +123,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\Levels\City\Photos\park.jpg" />
-    <Content Include="Content\Levels\Nature\Photos\nature.jpg" />
+    <Content Include="Content\Levels\Nature\Photos\beach.jpg" />
     <Content Include="Content\Levels\Nature\Photos\winter.jpg" />
     <Content Include="Content\selfie.jpg" />
     <Content Include="Content\Levels\City\Photos\train.jpg" />
