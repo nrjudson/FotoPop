@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-//using MonoGame_Textbox;
 
 namespace FotoPop
 {
@@ -28,6 +27,10 @@ namespace FotoPop
         float photoScale;
 
         //TextBox textbox;
+        Rectangle textRect;
+
+        // 
+        string yourInput = "GET READY BITCH";
 
         int score = 0;
 
@@ -36,6 +39,8 @@ namespace FotoPop
         float timeForLevel = 45.0f;
         float timeForWord = 10.0F;
         float elapsedTime = 0.0f;
+
+
 
         class Level
         {
@@ -61,7 +66,9 @@ namespace FotoPop
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.ToggleFullScreen();
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.ToggleFullScreen();
             Content.RootDirectory = "Content";
         }
 
@@ -100,8 +107,8 @@ namespace FotoPop
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);
 
-            //Rectangle textRect = new Rectangle(20, 20, 500, 40);
-            //textbox = new TextBox(textRect, 50, "type here", graphics.GraphicsDevice, title, Color.White, Color.DarkBlue, 2);
+            textRect = new Rectangle(photoRect.X, photoRect.Y + photoRect.Height + (int)(0.07f * screenRect.Height), photoRect.Width, (int)(0.11f * screenRect.Height));
+
         }
 
     
@@ -240,7 +247,11 @@ namespace FotoPop
             
             spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((photoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
-
+            // Draw the text entry
+            spriteBatch.FillRectangle(textRect, Color.Black);
+            spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
+            
+            
 
             spriteBatch.End();
 
