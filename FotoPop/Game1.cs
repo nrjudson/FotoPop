@@ -251,8 +251,14 @@ namespace FotoPop
                             // See if there are no more photos, so go back to the first photo 
                             if (currentPhotoIndex >= level.photos.Count)
                             {
-                                //////////////////////////////////////////////////////////////////////////////////////TODO here this should advance the LEVEL
+                                //////////////////////////////////////////////////////////////////////////////////////TODO here this should go back to level selection or show your score compared to others
                                 currentPhotoIndex = 0;
+                                if (level.name.Equals("Nature"))
+                                    loadLevel("City");
+                                else if (level.name.Equals("City"))
+                                {
+                                    loadLevel("Nature");
+                                }
                                 // Set new level timer? 
                                 elapsedTimeForLevel = 0.0f;
                             }
