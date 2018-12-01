@@ -355,8 +355,11 @@ namespace FotoPop
         private void setAndScalePhoto(Texture2D photo)
         {
             float fotoToScreenWidthPercentage = 0.7f;
+            float fotoToScreenHeightPercentage = 0.8f;
             float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
-            photoScale = fotoTargetWidth / (float)this.photo.Width;
+            float fotoTargetHeight = fotoToScreenHeightPercentage * (float)screenRect.Height;
+            photoScale = Math.Min(fotoTargetWidth / (float)this.photo.Width,
+                fotoTargetHeight / (float)this.photo.Height);
             int fotoXPos = (int)(((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
