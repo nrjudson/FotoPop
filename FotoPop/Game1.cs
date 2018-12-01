@@ -31,7 +31,7 @@ namespace FotoPop
         Rectangle textRect;
 
         // 
-        string yourInput = "GET READY BITCH";
+        string yourInput = "WRONG";
 
         int score = 0;
 
@@ -110,7 +110,7 @@ namespace FotoPop
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);
 
-            textRect = new Rectangle(photoRect.X, photoRect.Y + photoRect.Height + (int)(0.07f * screenRect.Height), photoRect.Width, (int)(0.11f * screenRect.Height));
+            textRect = new Rectangle(photoRect.X, photoRect.Y + photoRect.Height + (int)(0.07f * screenRect.Height), photoRect.Width, (int)(0.05f * screenRect.Height));
 
         }
 
@@ -356,7 +356,7 @@ namespace FotoPop
         private void setAndScalePhoto(Texture2D photo)
         {
             float fotoToScreenWidthPercentage = 0.7f;
-            float fotoToScreenHeightPercentage = 0.8f;
+            float fotoToScreenHeightPercentage = 0.75f;
             float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
             float fotoTargetHeight = fotoToScreenHeightPercentage * (float)screenRect.Height;
             photoScale = Math.Min(fotoTargetWidth / (float)this.photo.Width,
