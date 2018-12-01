@@ -241,6 +241,7 @@ namespace FotoPop
             spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
             spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
 
+
             // Draw the rectangle that shows how much time is left
             // TODO: Move some of this logic to UPDATE
             elapsedTime += gameTime.GetElapsedSeconds();
@@ -275,14 +276,14 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((photoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
-            spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.Width + 740, 80), Color.Black);
-            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.Width + 750, 110), Color.Black);
+            spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .03f), Color.Black);
+            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .05f), Color.Black);
 
 
             spriteBatch.End();
