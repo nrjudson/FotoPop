@@ -222,8 +222,11 @@ namespace FotoPop
                     }
                     if (key == Keys.Back)
                     {
-                        yourInput = yourInput.Substring(0, yourInput.Length - 1);
-                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        if (yourInput.Length > 0)
+                        {
+                            yourInput = yourInput.Substring(0, yourInput.Length - 1);
+                            lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        }
                     }
                 }
             }
@@ -336,14 +339,14 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+            spriteBatch.DrawString(title, ((int)(timeLeftForWord)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
             spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .03f), Color.Black);
-            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .05f), Color.Black);
+            spriteBatch.DrawString(sm, timeLeftForLevel.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .05f), Color.Black);
 
 
             spriteBatch.End();
@@ -352,9 +355,10 @@ namespace FotoPop
             // Draw the circle that goes over the photo
             //draw circle on photos.objectives.x and photos.objectives.y
             spriteBatch.Begin();
-            //          spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives.x, 0), 100, Color.White);
-            spriteBatch.DrawString(sm, (level.photos[currentPhotoIndex].objectives[0].x).ToString(), new Vector2(200, 500), Color.White); 
+            spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
+            spriteBatch.DrawString(sm, (level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x).ToString(), new Vector2(200, 500), Color.White); 
             spriteBatch.End();
+
             //level.photos[currentPhotoIndex].objectives
         }
 
