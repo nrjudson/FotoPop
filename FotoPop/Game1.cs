@@ -120,7 +120,7 @@ namespace FotoPop
             title = this.Content.Load<SpriteFont>("Fonts/title");
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
 
-            loadLevel("City");
+            loadLevel("Nature");
             //loadLevel("Nature");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);

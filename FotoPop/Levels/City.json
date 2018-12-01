@@ -16,8 +16,8 @@
 					]
 				},
 				{
-					"x": 300,
-					"y": 575,
+					"x": 247,
+					"y": 579,
 					"words": [
 						"ball",
 						"soccer ball",
@@ -26,14 +26,21 @@
 					]
 				},
 				{
-					"x": 540,
-					"y": 415,
+					"x": 487,
+					"y": 409,
 					"words": [
 						"garbage",
 						"bin",
 						"bins",
 						"recycling",
 						"trash"
+					]
+				},
+				{
+					"x": 917,
+					"y": 639,
+					"words": [
+						"grass"
 					]
 				}
 			]
