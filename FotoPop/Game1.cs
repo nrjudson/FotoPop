@@ -304,12 +304,7 @@ namespace FotoPop
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
 
-            // Draw the circle that goes over the photo 
-            // (Examples for now) (The unscaled selfie image is 660 x 371)
-            // TODO: Move some of this logic to UPDATE
-            spriteBatch.DrawCircle(getCircle(0, 0), 100, Color.White);
-            spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
-            spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
+
 
             // Draw the rectangle that shows how much time is left
             Rectangle outerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), photoRect.Width, (int)(0.03f * screenRect.Height));
@@ -341,14 +336,14 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(timeLeftForWord)).ToString(), new Vector2(photoRect.Width + screenRect.Width * 0.04f, screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
-            spriteBatch.DrawString(sm, "Level Up in:", new Vector2(photoRect.Width + 740, 80), Color.Black);
-            spriteBatch.DrawString(sm, timeLeftForLevel.ToString(), new Vector2(photoRect.Width + 750, 110), Color.Black);
+            spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .03f), Color.Black);
+            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .05f), Color.Black);
 
 
             spriteBatch.End();
@@ -459,6 +454,11 @@ namespace FotoPop
             int fotoXPos = (int)(((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
+
+            // Draw the circle that goes over the photo
+            //draw circle on photos.objectives.x and photos.objectives.y
+        
+
         }
 
 
