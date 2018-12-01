@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+//using MonoGame_Textbox;
 
 namespace FotoPop
 {
@@ -21,11 +22,17 @@ namespace FotoPop
         // The dimensions of the viewport
         Rectangle screenRect;
 
-        // The image to show
+        // The image showing
         Texture2D photo;
-        Rectangle fotoRect;
-        float fotoScale;
+        Rectangle photoRect;
+        float photoScale;
 
+        //TextBox textbox;
+
+        int score = 0;
+
+        bool newLevelLoaded = false;
+        int currentPhotoIndex = 0;
         float timeForLevel = 45.0f;
         float timeForWord = 10.0F;
         float elapsedTime = 0.0f;
@@ -71,8 +78,6 @@ namespace FotoPop
             base.Initialize();
 
 
-            
-
 
         }
 
@@ -92,8 +97,11 @@ namespace FotoPop
             title = this.Content.Load<SpriteFont>("Fonts/title");
 
             loadLevel("City");
-            photo = this.Content.Load<Texture2D>("Levels/" + level.name + "/Photos/" + level.photos[0].name);
+            photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);
+
+            //Rectangle textRect = new Rectangle(20, 20, 500, 40);
+            //textbox = new TextBox(textRect, 50, "type here", graphics.GraphicsDevice, title, Color.White, Color.DarkBlue, 2);
         }
 
     
@@ -131,6 +139,46 @@ namespace FotoPop
                 //gms.getLevel(1).LoadContent();
             }
 
+            if (state.IsKeyDown(Keys.NumPad0))
+            {
+                currentPhotoIndex = 0;
+
+                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                setAndScalePhoto(photo);
+            }
+            if (state.IsKeyDown(Keys.NumPad1))
+            {
+                currentPhotoIndex = 1;
+
+                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                setAndScalePhoto(photo);
+            }
+            if (state.IsKeyDown(Keys.NumPad2))
+            {
+                currentPhotoIndex = 2;
+
+                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                setAndScalePhoto(photo);
+            }
+
+
+
+            if (newLevelLoaded)
+            {
+                newLevelLoaded = false;
+                elapsedTime = 0.0f;
+
+                // Set the time for a level to 5 seconds * the # of objectives
+                timeForLevel = 0.0f;
+                foreach (Photo photo in level.photos)
+                {
+                    foreach (Objective objective in photo.objectives)
+                    {
+                        timeForLevel += 5.0f;
+                    }
+                }
+            }
+
 
             base.Update(gameTime);
         }
@@ -148,7 +196,7 @@ namespace FotoPop
             spriteBatch.Begin();
 
             // Draw the photo
-            spriteBatch.Draw(photo, fotoRect, Color.White);
+            spriteBatch.Draw(photo, photoRect, Color.White);
 
             // Draw the circle that goes over the photo 
             // (Examples for now) (The unscaled selfie image is 660 x 371)
@@ -161,11 +209,11 @@ namespace FotoPop
             // TODO: Move some of this logic to UPDATE
             elapsedTime += gameTime.GetElapsedSeconds();
             float timeLeft = timeForLevel - elapsedTime;
-            Rectangle outerTimeRect = new Rectangle(fotoRect.X, (int)(0.04f * screenRect.Height), fotoRect.Width, (int)(0.03f * screenRect.Height));
+            Rectangle outerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), photoRect.Width, (int)(0.03f * screenRect.Height));
             spriteBatch.FillRectangle(outerTimeRect, Color.White);
 
             float proportionTimeLeft = timeLeft / timeForLevel;
-            Rectangle innerTimeRect = new Rectangle(fotoRect.X, (int)(0.04f * screenRect.Height), (int)(fotoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
+            Rectangle innerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), (int)(photoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
             Color colorForTime;
             if (proportionTimeLeft > 0.5f)
                 colorForTime = Color.Green;
@@ -178,7 +226,6 @@ namespace FotoPop
             spriteBatch.FillRectangle(innerTimeRect, colorForTime);
 
             // Draw the time left for the level
-
             float wordTimeLeft = timeForWord - elapsedTime;
             float proportionWordTimeLeft = wordTimeLeft / timeForWord;
             Color colorForWordTime;
@@ -191,20 +238,10 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((fotoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
-    
-            //spriteBatch.DrawString()
-
-               
+            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((photoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
 
 
-            spriteBatch.End();
-
-
-            //draw text title
-            spriteBatch.Begin();
-            spriteBatch.DrawString(title, "Foto Pop", new Vector2(1, 1), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -222,8 +259,8 @@ namespace FotoPop
         {
             int diameter = (int)(screenRect.Width / 20.0f);
             int radius = (int)(diameter / 2.0f);
-            int newX = (int)(fotoScale * origX) + fotoRect.X;
-            int newY = (int)(fotoScale * origY) + fotoRect.Y;
+            int newX = (int)(photoScale * origX) + photoRect.X;
+            int newY = (int)(photoScale * origY) + photoRect.Y;
 
             return new CircleF(new Point2(newX, newY), radius);
         }
@@ -292,6 +329,9 @@ namespace FotoPop
                     }
                 }
             }
+
+            newLevelLoaded = true;
+            
         }
 
 
@@ -303,12 +343,17 @@ namespace FotoPop
         {
             float fotoToScreenWidthPercentage = 0.7f;
             float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
-            fotoScale = fotoTargetWidth / (float)this.photo.Width;
+            photoScale = fotoTargetWidth / (float)this.photo.Width;
             int fotoXPos = (int)(((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
-            fotoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(fotoScale * (float)this.photo.Height));
+            photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
         }
 
+
+        private string getCurrentPhotoUri()
+        {
+            return "Levels/" + level.name + "/Photos/" + level.photos[currentPhotoIndex].name;
+        }
 
     }
 }
