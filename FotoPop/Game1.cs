@@ -26,7 +26,8 @@ namespace FotoPop
         Rectangle fotoRect;
         float fotoScale;
 
-        float timeForLevel = 10.0f;
+        float timeForLevel = 45.0f;
+        float timeForWord = 10.0F;
         float elapsedTime = 0.0f;
 
         class Level
@@ -177,6 +178,21 @@ namespace FotoPop
             spriteBatch.FillRectangle(innerTimeRect, colorForTime);
 
             // Draw the time left for the level
+
+            float wordTimeLeft = timeForWord - elapsedTime;
+            float proportionWordTimeLeft = wordTimeLeft / timeForWord;
+            Color colorForWordTime;
+            if (proportionWordTimeLeft > 0.5f)
+                colorForWordTime = Color.Green;
+            else if (proportionWordTimeLeft > 0.3f)
+                colorForWordTime = Color.Yellow;
+            else if (proportionWordTimeLeft < 0.3)
+                colorForWordTime = Color.Red;
+            else
+                colorForWordTime = Color.Purple;
+            
+            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((fotoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+    
             //spriteBatch.DrawString()
 
                
@@ -188,7 +204,7 @@ namespace FotoPop
 
             //draw text title
             spriteBatch.Begin();
-            spriteBatch.DrawString(title, "Hello Noah", new Vector2(1, 1), Color.White);
+            spriteBatch.DrawString(title, "Foto Pop", new Vector2(1, 1), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
