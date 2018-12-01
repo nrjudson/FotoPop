@@ -1,0 +1,75 @@
+﻿{
+	"levelName": "Nature",
+	"photos": [
+		{
+			"photo": "beach",
+			"objectives": 
+			[
+				{
+					"x": 900,
+					"y": 500,
+					"words": [
+						"sky",
+					]
+				},
+				{
+					"x": 250,
+					"y": 575,
+					"words": [
+						"rock",
+						"boulder",
+
+					]
+				},
+				{
+					"x": 1700,
+					"y": 600,
+					"words": [
+						"wave",
+						"foam",
+						"ocean",
+					]
+				},
+				{
+					"x": 600,
+					"y": 800,
+					"words": [
+						"ocean",
+						"sea",
+					]
+				}
+			]
+		},
+		{
+			"photo": "winter",
+			"objectives": 
+			[
+				{
+					"x": 400,
+					"y": 1200,
+					"words": [
+						"unhappiness",
+						"clouds",
+						"cold",
+					]
+				},
+				{
+					"x": 1200,
+					"y": 2400,
+					"words": [
+						"snow",
+						"ice",
+
+					]
+				},
+				{
+					"x": 1300,
+					"y": 1000,
+					"words": [
+						"wind",
+					]
+				}
+			]
+		}
+	]
+}
