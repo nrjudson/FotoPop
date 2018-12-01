@@ -132,6 +132,9 @@ namespace FotoPop
             // TODO: Unload any non ContentManager content here
         }
 
+        float lastKeyPressTime = 0.0f;
+
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -181,11 +184,21 @@ namespace FotoPop
             Keys[] keys = state.GetPressedKeys();
             foreach (Keys key in keys)
             {
-
-                int a = (int)key;
-                int b = (int)key;
-                int c = (int)key;
-                int d = (int)key;
+                float secondsBetweenLetters = 0.16f;
+                if ((float)(gameTime.TotalGameTime.TotalSeconds) > lastKeyPressTime + secondsBetweenLetters)
+                {
+                    // Is the key pressed a letter?
+                    if (key >= Keys.A && key <= Keys.Z)
+                    {
+                        yourInput += key;
+                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                    }
+                    if (key == Keys.Back)
+                    {
+                        yourInput = yourInput.Substring(0, yourInput.Length - 1);
+                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                    }
+                }
             }
 
 
