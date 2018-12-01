@@ -21,6 +21,10 @@ namespace FotoPop
         Rectangle fotoRect;
         float fotoScale;
 
+        float timeForLevel = 10.0f;
+        float elapsedTime = 0.0f;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -91,6 +95,8 @@ namespace FotoPop
 
             // TODO: Add your update logic here
 
+            
+
             base.Update(gameTime);
         }
 
@@ -114,6 +120,32 @@ namespace FotoPop
             spriteBatch.DrawCircle(getCircle(0, 0), 100, Color.White);
             spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
             spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
+
+            // Draw the rectangle that shows how much time is left
+            // TODO: Move some of this logic to UPDATE
+            elapsedTime += gameTime.GetElapsedSeconds();
+            float timeLeft = timeForLevel - elapsedTime;
+            Rectangle outerTimeRect = new Rectangle(fotoRect.X, (int)(0.04f * screenRect.Height), fotoRect.Width, (int)(0.03f * screenRect.Height));
+            spriteBatch.FillRectangle(outerTimeRect, Color.White);
+
+            float proportionTimeLeft = timeLeft / timeForLevel;
+            Rectangle innerTimeRect = new Rectangle(fotoRect.X, (int)(0.04f * screenRect.Height), (int)(fotoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
+            Color colorForTime;
+            if (proportionTimeLeft > 0.5f)
+                colorForTime = Color.Green;
+            else if (proportionTimeLeft > 0.2f)
+                colorForTime = Color.Yellow;
+            else if (proportionTimeLeft > 0.1)
+                colorForTime = Color.Orange;
+            else
+                colorForTime = Color.Red;
+            spriteBatch.FillRectangle(innerTimeRect, colorForTime);
+
+            // Draw the time left for the level
+            //spriteBatch.DrawString()
+
+
+
 
             spriteBatch.End();
 
