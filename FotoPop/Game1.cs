@@ -224,6 +224,7 @@ namespace FotoPop
 
             float proportionTimeLeft = timeLeft / timeForLevel;
             Rectangle innerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), (int)(photoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
+         
             Color colorForTime;
             if (proportionTimeLeft > 0.5f)
                 colorForTime = Color.Green;
@@ -253,8 +254,10 @@ namespace FotoPop
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
-            
-            
+
+            spriteBatch.DrawString(sm, "Level Up in:", new Vector2(photoRect.Width + 740, 80), Color.Black);
+            spriteBatch.DrawString(sm, timeLeft.ToString(), new Vector2(photoRect.Width + 750, 110), Color.Black);
+
 
             spriteBatch.End();
 
