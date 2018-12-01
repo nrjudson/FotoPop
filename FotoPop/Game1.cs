@@ -280,8 +280,8 @@ namespace FotoPop
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
-            spriteBatch.DrawString(sm, "Level Up in:", new Vector2(photoRect.Width + 740, 80), Color.Black);
-            spriteBatch.DrawString(sm, timeLeft.ToString(), new Vector2(photoRect.Width + 750, 110), Color.Black);
+            spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.Width + 740, 80), Color.Black);
+            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.Width + 750, 110), Color.Black);
 
 
             spriteBatch.End();
