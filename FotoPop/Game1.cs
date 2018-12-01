@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 namespace FotoPop
 {
@@ -18,6 +19,7 @@ namespace FotoPop
         // The image to show
         Texture2D foto;
         Rectangle fotoRect;
+        float fotoScale;
 
         public Game1()
         {
@@ -62,7 +64,7 @@ namespace FotoPop
             foto = this.Content.Load<Texture2D>("selfie");
             float fotoToScreenWidthPercentage = 0.7f;
             float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
-            float fotoScale = fotoTargetWidth / (float)foto.Width;
+            fotoScale = fotoTargetWidth / (float)foto.Width;
             int fotoXPos = (int) (((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             fotoRect = new Rectangle(fotoXPos, fotoYPos, (int) fotoTargetWidth, (int) (fotoScale * (float) foto.Height));
@@ -107,9 +109,33 @@ namespace FotoPop
             // Draw the photo
             spriteBatch.Draw(foto, fotoRect, Color.White);
 
+            // Draw the circle that goes over the photo 
+            // (Examples for now) (The unscaled selfie image is 660 x 371)
+            spriteBatch.DrawCircle(getCircle(0, 0), 100, Color.White);
+            spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
+            spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+
+        /// <summary>
+        /// Used to get the dimensions of the circle to show on the photo
+        /// Converts absolute positioning of the pixels in the original image to the scaled coordinates in whatever is being shown.
+        /// </summary>
+        /// <param name="origX">X Pos in unscaled photo</param>
+        /// <param name="origY">Y Pos in unscaled photo</param>
+        /// <returns>CircleF that should be drawn on the photo</returns>
+        private CircleF getCircle(int origX, int origY)
+        {
+            int diameter = (int)(screenRect.Width / 20.0f);
+            int radius = (int)(diameter / 2.0f);
+            int newX = (int)(fotoScale * origX) + fotoRect.X;
+            int newY = (int)(fotoScale * origY) + fotoRect.Y;
+
+            return new CircleF(new Point2(newX, newY), radius);
         }
     }
 }
