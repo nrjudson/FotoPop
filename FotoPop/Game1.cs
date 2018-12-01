@@ -92,10 +92,15 @@ namespace FotoPop
         /// </summary>
         protected override void LoadContent()
         {
+            // UNCOMMENT FOR WINDOWED-MODE
+            //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - 300;
+            //graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height - 150;
 
+            // UNCOMMENT FOR FULL SCREEN
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
             graphics.ToggleFullScreen();
+
             // Grab the screen dimensions
             screenRect = GraphicsDevice.Viewport.Bounds;
 
@@ -170,6 +175,26 @@ namespace FotoPop
                 photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
                 setAndScalePhoto(photo);
             }
+
+            // Text entry
+            Keys[] keys = state.GetPressedKeys();
+            foreach (Keys key in keys)
+            {
+
+                int a = (int)key;
+                int b = (int)key;
+                int c = (int)key;
+                int d = (int)key;
+            }
+
+
+            //        if (state.IsKeyDown(Keys.A) || state.GetPressedKeys)
+            //{
+            //    currentPhotoIndex = 2;
+
+            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+            //    setAndScalePhoto(photo);
+            //}
 
 
 
