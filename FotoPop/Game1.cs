@@ -11,6 +11,8 @@ namespace FotoPop
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Texture2D img;
         
         public Game1()
         {
@@ -41,7 +43,7 @@ namespace FotoPop
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            this.Content.Load("selfie.jpg");
+            img = this.Content.Load<Texture2D>("selfie");
         }
 
         /// <summary>
@@ -77,6 +79,11 @@ namespace FotoPop
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            Rectangle r = new Rectangle(0, 0, 500, 300);
+            spriteBatch.Draw(img, r, Color.Bisque);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
