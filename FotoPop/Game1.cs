@@ -120,7 +120,7 @@ namespace FotoPop
             title = this.Content.Load<SpriteFont>("Fonts/title");
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
 
-            loadLevel("City");
+            loadLevel("Nature");
             //loadLevel("Nature");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);
@@ -222,8 +222,11 @@ namespace FotoPop
                     }
                     if (key == Keys.Back)
                     {
-                        yourInput = yourInput.Substring(0, yourInput.Length - 1);
-                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        if (yourInput.Length > 0)
+                        {
+                            yourInput = yourInput.Substring(0, yourInput.Length - 1);
+                            lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        }
                     }
                 }
             }
@@ -349,6 +352,14 @@ namespace FotoPop
             spriteBatch.End();
 
             base.Draw(gameTime);
+            // Draw the circle that goes over the photo
+            //draw circle on photos.objectives.x and photos.objectives.y
+            spriteBatch.Begin();
+            spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
+            spriteBatch.DrawString(sm, (level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x).ToString(), new Vector2(200, 500), Color.White); 
+            spriteBatch.End();
+
+            //level.photos[currentPhotoIndex].objectives
         }
 
 
@@ -455,10 +466,7 @@ namespace FotoPop
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
 
-            // Draw the circle that goes over the photo
-            //draw circle on photos.objectives.x and photos.objectives.y
-        
-
+       
         }
 
 
