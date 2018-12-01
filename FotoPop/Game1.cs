@@ -12,11 +12,17 @@ namespace FotoPop
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D img;
-        
+        // The dimensions of the viewport
+        Rectangle screenRect;
+
+        // The image to show
+        Texture2D foto;
+        Rectangle fotoRect;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            //graphics.ToggleFullScreen();
             Content.RootDirectory = "Content";
         }
 
@@ -31,6 +37,11 @@ namespace FotoPop
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+
+            
+
+
         }
 
         /// <summary>
@@ -39,11 +50,22 @@ namespace FotoPop
         /// </summary>
         protected override void LoadContent()
         {
+            // Grab the screen dimensions
+            screenRect = GraphicsDevice.Viewport.Bounds;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            img = this.Content.Load<Texture2D>("selfie");
+
+            // Load the photo to show and scale it to ~70% of the screen width
+            foto = this.Content.Load<Texture2D>("selfie");
+            float fotoToScreenWidthPercentage = 0.7f;
+            float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
+            float fotoScale = fotoTargetWidth / (float)foto.Width;
+            int fotoXPos = (int) (((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
+            int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
+            fotoRect = new Rectangle(fotoXPos, fotoYPos, (int) fotoTargetWidth, (int) (fotoScale * (float) foto.Height));
         }
 
         /// <summary>
@@ -81,8 +103,10 @@ namespace FotoPop
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
-            Rectangle r = new Rectangle(0, 0, 500, 300);
-            spriteBatch.Draw(img, r, Color.Bisque);
+
+            // Draw the photo
+            spriteBatch.Draw(foto, fotoRect, Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
