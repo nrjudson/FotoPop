@@ -67,9 +67,6 @@ namespace FotoPop
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            graphics.ToggleFullScreen();
             Content.RootDirectory = "Content";
         }
 
@@ -95,6 +92,10 @@ namespace FotoPop
         /// </summary>
         protected override void LoadContent()
         {
+
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.ToggleFullScreen();
             // Grab the screen dimensions
             screenRect = GraphicsDevice.Viewport.Bounds;
 
