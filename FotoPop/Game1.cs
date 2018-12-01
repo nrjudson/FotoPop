@@ -44,6 +44,8 @@ namespace FotoPop
 
             // TODO: use this.Content to load your game content here
             img = this.Content.Load<Texture2D>("selfie");
+
+    
         }
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace FotoPop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -84,6 +87,8 @@ namespace FotoPop
             Rectangle r = new Rectangle(0, 0, 500, 300);
             spriteBatch.Draw(img, r, Color.Bisque);
             spriteBatch.End();
+       
+    
 
             base.Draw(gameTime);
         }
