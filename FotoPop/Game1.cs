@@ -93,13 +93,14 @@ namespace FotoPop
         protected override void LoadContent()
         {
             // UNCOMMENT FOR WINDOWED-MODE
-            //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - 300;
-            //graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height - 150;
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - 800;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height - 450;
+            graphics.ApplyChanges();
 
             // UNCOMMENT FOR FULL SCREEN
-            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            graphics.ToggleFullScreen();
+            //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            //graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            //graphics.ToggleFullScreen();
 
             // Grab the screen dimensions
             screenRect = GraphicsDevice.Viewport.Bounds;
