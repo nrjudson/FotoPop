@@ -1,0 +1,70 @@
+﻿{
+	"levelName": "City",
+	"photos": [
+		{
+			"photo": "park",
+			"objectives": 
+			[
+				{
+					"x": 0,
+					"y": 0,
+					"words": [
+						"branch",
+						"leaf",
+						"pines",
+						"tree"
+					]
+				},
+				{
+					"x": 250,
+					"y": 575,
+					"words": [
+						"ball",
+						"soccer ball",
+						"soccer",
+						"football"
+					]
+				},
+				{
+					"x": 480,
+					"y": 415,
+					"words": [
+						"garbage",
+						"bin",
+						"bins",
+						"recycling",
+						"trash"
+					]
+				}
+			]
+		},
+		{
+			"photo": "train",
+			"objectives": 
+			[
+				{
+					"x": 540,
+					"y": 360,
+					"words": [
+						"clock"
+					]
+				},
+				{
+					"x": 320,
+					"y": 475,
+					"words": [
+						"train"
+					]
+				},
+				{
+					"x": 455,
+					"y": 290,
+					"words": [
+						"light",
+						"lamp"
+					]
+				}
+			]
+		}
+	]
+}

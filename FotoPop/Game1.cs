@@ -2,6 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace FotoPop
 {
@@ -17,13 +22,33 @@ namespace FotoPop
         Rectangle screenRect;
 
         // The image to show
-        Texture2D foto;
+        Texture2D photo;
         Rectangle fotoRect;
         float fotoScale;
 
         float timeForLevel = 10.0f;
         float elapsedTime = 0.0f;
 
+        class Level
+        {
+            public string name;
+            public List<Photo> photos;
+        }
+
+        class Photo
+        {
+            public string name;
+            public List<Objective> objectives;
+        }
+
+        class Objective
+        {
+            public int x;
+            public int y;
+            public List<string> words;
+        }
+
+        Level level;
 
         public Game1()
         {
@@ -62,20 +87,12 @@ namespace FotoPop
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-
-            // Load the photo to show and scale it to ~70% of the screen width
-            foto = this.Content.Load<Texture2D>("selfie");
-            float fotoToScreenWidthPercentage = 0.7f;
-            float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
-            fotoScale = fotoTargetWidth / (float)foto.Width;
-            int fotoXPos = (int) (((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
-            int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
-            fotoRect = new Rectangle(fotoXPos, fotoYPos, (int) fotoTargetWidth, (int) (fotoScale * (float) foto.Height));
-
-            //LOAD FONT
+            // Load font
             title = this.Content.Load<SpriteFont>("Fonts/title");
 
+            loadLevel("City");
+            photo = this.Content.Load<Texture2D>("Levels/" + level.name + "/Photos/" + level.photos[0].name);
+            setAndScalePhoto(photo);
         }
 
     
@@ -102,7 +119,17 @@ namespace FotoPop
 
             // TODO: Add your update logic here
 
-            
+            // Poll for current keyboard state
+            KeyboardState state = Keyboard.GetState();
+
+            // If they hit Tab, move to the City level
+            if (state.IsKeyDown(Keys.Tab))
+            {
+                //Game1 g = new Game1();
+                //GameStateManager gms = new GameStateManager();
+                //gms.getLevel(1).LoadContent();
+            }
+
 
             base.Update(gameTime);
         }
@@ -120,10 +147,11 @@ namespace FotoPop
             spriteBatch.Begin();
 
             // Draw the photo
-            spriteBatch.Draw(foto, fotoRect, Color.White);
+            spriteBatch.Draw(photo, fotoRect, Color.White);
 
             // Draw the circle that goes over the photo 
             // (Examples for now) (The unscaled selfie image is 660 x 371)
+            // TODO: Move some of this logic to UPDATE
             spriteBatch.DrawCircle(getCircle(0, 0), 100, Color.White);
             spriteBatch.DrawCircle(getCircle(330, 185), 100, Color.White);
             spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
@@ -151,6 +179,7 @@ namespace FotoPop
             // Draw the time left for the level
             //spriteBatch.DrawString()
 
+               
 
 
 
@@ -182,5 +211,88 @@ namespace FotoPop
 
             return new CircleF(new Point2(newX, newY), radius);
         }
+
+
+        /// <summary>
+        /// Read the JSON file for the associated level name and set up the level object in the game code
+        /// </summary>
+        /// <param name="name"></param>
+        private void loadLevel(string name)
+        {
+            // Open the file to read
+            using (StreamReader r = new StreamReader("Levels/" + name + ".json"))
+            {
+                string json = r.ReadToEnd();
+                JObject levelJson = (JObject)JsonConvert.DeserializeObject(json);
+
+                level = new Level();
+
+                level.name = levelJson.GetValue("levelName").ToString();
+                JArray photos = (JArray)levelJson.GetValue("photos");
+
+                level.photos = new List<Photo>();
+
+                // Iterate over the photos
+                using (var photoEnum = photos.GetEnumerator())
+                {
+                    while (photoEnum.MoveNext())
+                    {
+                        Photo photo = new Photo();
+
+                        JObject photoJson = (JObject)photoEnum.Current;
+                        photo.name = (string)photoJson.GetValue("photo");
+                        JArray objectives = (JArray)photoJson.GetValue("objectives");
+
+                        photo.objectives = new List<Objective>();
+
+                        // Iterate over the objectives
+                        using (var objectiveEnum = objectives.GetEnumerator())
+                        {
+                            while (objectiveEnum.MoveNext())
+                            {
+                                Objective objective = new Objective();
+
+                                JObject objectiveJson = (JObject)objectiveEnum.Current;
+                                objective.x = (int)objectiveJson.GetValue("x");
+                                objective.y = (int)objectiveJson.GetValue("y");
+                                JArray words = (JArray)objectiveJson.GetValue("words");
+
+                                objective.words = new List<string>();
+
+                                // Iterate over the words
+                                using (var wordsEnum = words.GetEnumerator())
+                                {
+                                    while (wordsEnum.MoveNext())
+                                    {
+                                        objective.words.Add((string)wordsEnum.Current);
+                                    }
+                                }
+
+                                photo.objectives.Add(objective);
+                            }
+                        }
+
+                        level.photos.Add(photo);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Load the photo to show and scale it to ~70% of the screen width
+        /// </summary>
+        /// <param name="photo"></param>
+        private void setAndScalePhoto(Texture2D photo)
+        {
+            float fotoToScreenWidthPercentage = 0.7f;
+            float fotoTargetWidth = fotoToScreenWidthPercentage * (float)screenRect.Width;
+            fotoScale = fotoTargetWidth / (float)this.photo.Width;
+            int fotoXPos = (int)(((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
+            int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
+            fotoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(fotoScale * (float)this.photo.Height));
+        }
+
+
     }
 }
