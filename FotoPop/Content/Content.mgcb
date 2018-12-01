@@ -13,12 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin File.spritefont
+#begin Fonts/title.spritefont
 /importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
+/processor:LocalizedFontProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:File.spritefont;Title.spritefont
+/build:Fonts/title.spritefont
 
 #begin selfie.jpg
 /importer:TextureImporter
@@ -31,6 +31,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:selfie.jpg
+
+#begin train.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:train.jpg
 
 #begin train.jpg
 /importer:TextureImporter

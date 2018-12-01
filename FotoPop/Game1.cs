@@ -12,7 +12,7 @@ namespace FotoPop
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        SpriteFont title;
         // The dimensions of the viewport
         Rectangle screenRect;
 
@@ -72,7 +72,14 @@ namespace FotoPop
             int fotoXPos = (int) (((1.0f - fotoToScreenWidthPercentage) / 2.0f) * screenRect.Width); // Center the X position
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             fotoRect = new Rectangle(fotoXPos, fotoYPos, (int) fotoTargetWidth, (int) (fotoScale * (float) foto.Height));
+
+            //LOAD FONT
+            title = this.Content.Load<SpriteFont>("Fonts/title");
+
         }
+
+    
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -147,6 +154,12 @@ namespace FotoPop
 
 
 
+            spriteBatch.End();
+
+
+            //draw text title
+            spriteBatch.Begin();
+            spriteBatch.DrawString(title, "Hello Noah", new Vector2(1, 1), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
