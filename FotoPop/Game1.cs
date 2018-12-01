@@ -47,7 +47,7 @@ namespace FotoPop
 
 
             
-
+       
 
         }
 
@@ -143,7 +143,7 @@ namespace FotoPop
                 colorForTime = Color.Green;
             else if (proportionTimeLeft > 0.2f)
                 colorForTime = Color.Yellow;
-            else if (proportionTimeLeft > 0.1)
+            else if (proportionTimeLeft > 0.1f)
                 colorForTime = Color.Orange;
             else
                 colorForTime = Color.Red;
@@ -166,9 +166,10 @@ namespace FotoPop
             spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((fotoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
     
 
-
             spriteBatch.End();
 
+
+           
 
             //draw text title
             spriteBatch.Begin();
@@ -195,5 +196,7 @@ namespace FotoPop
 
             return new CircleF(new Point2(newX, newY), radius);
         }
+
+
     }
 }
