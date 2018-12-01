@@ -31,7 +31,7 @@ namespace FotoPop
         Rectangle textRect;
 
         // 
-        string yourInput = "WRONG";
+        string yourInput = "YOUR ANSWER HERE:";
         bool neverTyped = true;
 
         int score = 0;
@@ -49,7 +49,7 @@ namespace FotoPop
 
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
-
+        string gameName = "PhotoPop";
 
         class Level
         {
@@ -119,7 +119,6 @@ namespace FotoPop
             // Load font
             title = this.Content.Load<SpriteFont>("Fonts/title");
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
-
             loadLevel("Nature");
             //loadLevel("Nature");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
@@ -304,6 +303,9 @@ namespace FotoPop
 
             spriteBatch.Begin();
 
+            //Draw Game Name
+            spriteBatch.DrawString(title, gameName, new Vector2(100, photoRect.Height *.05f), Color.White);
+
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
 
@@ -355,11 +357,8 @@ namespace FotoPop
             // Draw the circle that goes over the photo
             //draw circle on photos.objectives.x and photos.objectives.y
             spriteBatch.Begin();
-            spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
-            spriteBatch.DrawString(sm, (level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x).ToString(), new Vector2(200, 500), Color.White); 
+            spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10); 
             spriteBatch.End();
-
-            //level.photos[currentPhotoIndex].objectives
         }
 
 
