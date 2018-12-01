@@ -32,15 +32,23 @@ namespace FotoPop
 
         // 
         string yourInput = "WRONG";
+        bool neverTyped = true;
 
         int score = 0;
 
         bool newLevelLoaded = false;
         int currentPhotoIndex = 0;
+        int currentObjectiveIndex = 0;
         float timeForLevel = 45.0f;
         float timeForWord = 10.0F;
-        float elapsedTime = 0.0f;
+        float elapsedTimeForLevel = 0.0f;
+        float elapsedTimeForWord = 0.0f;
+        float timeLeftForLevel = 1.0f;
+        float timeLeftForWord = 1.0f;
 
+
+        float lastKeyPressTime = 0.0f;
+        float lastWordCheckTime = 0.0f;
 
 
         class Level
@@ -113,6 +121,7 @@ namespace FotoPop
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
 
             loadLevel("City");
+            //loadLevel("Nature");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
             setAndScalePhoto(photo);
 
@@ -132,8 +141,6 @@ namespace FotoPop
             // TODO: Unload any non ContentManager content here
         }
 
-        float lastKeyPressTime = 0.0f;
-
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -142,10 +149,16 @@ namespace FotoPop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // Grab the time difference
+            elapsedTimeForLevel += gameTime.GetElapsedSeconds();
+            elapsedTimeForWord += gameTime.GetElapsedSeconds();
+
+            timeLeftForLevel = timeForLevel - elapsedTimeForLevel;
+            timeLeftForWord = timeForWord - elapsedTimeForWord;
+
+            // Esc is exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
 
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
@@ -182,10 +195,24 @@ namespace FotoPop
 
             // Text entry
             Keys[] keys = state.GetPressedKeys();
-            foreach (Keys key in keys)
+            if (keys.Length > 0)
             {
-                float secondsBetweenLetters = 0.16f;
-                if ((float)(gameTime.TotalGameTime.TotalSeconds) > lastKeyPressTime + secondsBetweenLetters)
+                if (neverTyped)
+                {
+                    yourInput = "";
+                }
+                neverTyped = false;
+            }
+
+
+            float now = (float) gameTime.TotalGameTime.TotalSeconds;
+
+            float secondsBetweenLetters = 0.16f;
+
+            // Check all key presses
+            if (now > lastKeyPressTime + secondsBetweenLetters)
+            {
+                foreach (Keys key in keys)
                 {
                     // Is the key pressed a letter?
                     if (key >= Keys.A && key <= Keys.Z)
@@ -200,22 +227,51 @@ namespace FotoPop
                     }
                 }
             }
+        
 
+            // Check if the word is correct every 100 ms
+            float secondsBetweenWordChecks = 0.1f;
+            if (now > lastWordCheckTime + secondsBetweenWordChecks)
+            {
+                foreach (string word in level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].words)
+                {
+                    if (yourInput.ToLower().Equals(word.ToLower()))
+                    {
+                        // The word is correct. Advance to the next word (objective).
+                        currentObjectiveIndex++;
+                        // Reset the prompt
+                        yourInput = "";
+                        // Set new word timer
+                        elapsedTimeForWord = 0.0f;
+                        // See if we need to change the photo
+                        if (currentObjectiveIndex >= level.photos[currentPhotoIndex].objectives.Count)
+                        {
+                            currentObjectiveIndex = 0;
+                            currentPhotoIndex++;
+                            // See if there are no more photos, so go back to the first photo 
+                            if (currentPhotoIndex >= level.photos.Count)
+                            {
+                                //////////////////////////////////////////////////////////////////////////////////////TODO here this should advance the LEVEL
+                                currentPhotoIndex = 0;
+                                // Set new level timer? 
+                                elapsedTimeForLevel = 0.0f;
+                            }
+                            // Show and load the new photo
+                            photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                            setAndScalePhoto(photo);
+                        }
+                    }
+                }
+                lastWordCheckTime = now;
+            }
 
-            //        if (state.IsKeyDown(Keys.A) || state.GetPressedKeys)
-            //{
-            //    currentPhotoIndex = 2;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
 
 
 
             if (newLevelLoaded)
             {
                 newLevelLoaded = false;
-                elapsedTime = 0.0f;
+                elapsedTimeForLevel = 0.0f;
 
                 // Set the time for a level to 5 seconds * the # of objectives
                 timeForLevel = 0.0f;
@@ -227,6 +283,7 @@ namespace FotoPop
                     }
                 }
             }
+            
 
 
             base.Update(gameTime);
@@ -255,13 +312,10 @@ namespace FotoPop
             spriteBatch.DrawCircle(getCircle(660, 371), 100, Color.White);
 
             // Draw the rectangle that shows how much time is left
-            // TODO: Move some of this logic to UPDATE
-            elapsedTime += gameTime.GetElapsedSeconds();
-            float timeLeft = timeForLevel - elapsedTime;
             Rectangle outerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), photoRect.Width, (int)(0.03f * screenRect.Height));
             spriteBatch.FillRectangle(outerTimeRect, Color.White);
 
-            float proportionTimeLeft = timeLeft / timeForLevel;
+            float proportionTimeLeft = timeLeftForLevel / timeForLevel;
             Rectangle innerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), (int)(photoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
          
             Color colorForTime;
@@ -276,8 +330,7 @@ namespace FotoPop
             spriteBatch.FillRectangle(innerTimeRect, colorForTime);
 
             // Draw the time left for the level
-            float wordTimeLeft = timeForWord - elapsedTime;
-            float proportionWordTimeLeft = wordTimeLeft / timeForWord;
+            float proportionWordTimeLeft = timeLeftForWord / timeForWord;
             Color colorForWordTime;
             if (proportionWordTimeLeft > 0.5f)
                 colorForWordTime = Color.Green;
@@ -288,14 +341,14 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((photoRect.Width + 174), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+            spriteBatch.DrawString(title, ((int)(timeLeftForWord)).ToString(), new Vector2(photoRect.Width + screenRect.Width * 0.04f, screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
             spriteBatch.DrawString(sm, "Level Up in:", new Vector2(photoRect.Width + 740, 80), Color.Black);
-            spriteBatch.DrawString(sm, timeLeft.ToString(), new Vector2(photoRect.Width + 750, 110), Color.Black);
+            spriteBatch.DrawString(sm, timeLeftForLevel.ToString(), new Vector2(photoRect.Width + 750, 110), Color.Black);
 
 
             spriteBatch.End();
