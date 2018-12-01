@@ -296,6 +296,13 @@ namespace FotoPop
             spriteBatch.End();
 
             base.Draw(gameTime);
+            // Draw the circle that goes over the photo
+            //draw circle on photos.objectives.x and photos.objectives.y
+            spriteBatch.Begin();
+            //          spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives.x, 0), 100, Color.White);
+            spriteBatch.DrawString(sm, (level.photos[currentPhotoIndex].objectives[0].x).ToString(), new Vector2(200, 500), Color.White); 
+            spriteBatch.End();
+            //level.photos[currentPhotoIndex].objectives
         }
 
 
@@ -402,10 +409,7 @@ namespace FotoPop
             int fotoYPos = (int)(0.1f * screenRect.Height); // Start the img 10% from the top of the screen
             photoRect = new Rectangle(fotoXPos, fotoYPos, (int)fotoTargetWidth, (int)(photoScale * (float)this.photo.Height));
 
-            // Draw the circle that goes over the photo
-            //draw circle on photos.objectives.x and photos.objectives.y
-        
-
+       
         }
 
 
