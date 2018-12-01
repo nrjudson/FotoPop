@@ -336,14 +336,14 @@ namespace FotoPop
             else
                 colorForWordTime = Color.Purple;
             
-            spriteBatch.DrawString(title, ((int)(wordTimeLeft)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
+            spriteBatch.DrawString(title, ((int)(timeLeftForWord)).ToString(), new Vector2((screenRect.Width - .1f * screenRect.Width), screenRect.Height - (screenRect.Height * proportionWordTimeLeft)), colorForWordTime);
 
             // Draw the text entry
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
             spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .03f), Color.Black);
-            spriteBatch.DrawString(sm, timeLeft.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .05f), Color.Black);
+            spriteBatch.DrawString(sm, timeLeftForLevel.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .1f), Color.Black);
 
 
             spriteBatch.End();
