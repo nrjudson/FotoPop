@@ -34,13 +34,16 @@ namespace FotoPop
         string yourInput = "Start typing!";
         bool neverTyped = true;
 
-        int score = 0;
+        float maxPointsPerWord = 100;
+
+        string yourName = "Bob";
+        float score = 0;
 
         bool newLevelLoaded = false;
         int currentPhotoIndex = 0;
         int currentObjectiveIndex = 0;
-        float timeForLevel = 45.0f;
-        float timeForWord = 10.0F;
+        static float timeForLevel = 45.0f;
+        static float timeForWord = 10.0F;
         float elapsedTimeForLevel = 0.0f;
         float elapsedTimeForWord = 0.0f;
         float timeLeftForLevel = 1.0f;
@@ -239,6 +242,8 @@ namespace FotoPop
                     {
                         // The word is correct. Advance to the next word (objective).
                         currentObjectiveIndex++;
+                        // Update your score
+                        score += (timeLeftForWord / timeForWord) * maxPointsPerWord;
                         // Reset the prompt
                         yourInput = "";
                         // Set new word timer
@@ -256,9 +261,7 @@ namespace FotoPop
                                 if (level.name.Equals("Nature"))
                                     loadLevel("City");
                                 else if (level.name.Equals("City"))
-                                {
                                     loadLevel("Nature");
-                                }
                                 // Set new level timer? 
                                 elapsedTimeForLevel = 0.0f;
                             }
@@ -357,6 +360,9 @@ namespace FotoPop
             
             // Draw the circle that goes over the photo
             spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
+
+            Vector2 scoreLoc = new Vector2(0.02f * screenRect.Width, 0.2f * screenRect.Height);
+            spriteBatch.DrawString(title, "Score: " + ((int)(score)).ToString(), scoreLoc, Color.White);
 
             spriteBatch.End();
 
