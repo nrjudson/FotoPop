@@ -63,16 +63,16 @@
 			"objectives": 
 			[
 				{
-					"x": 1500,
-					"y": 700,
+					"x": 350,
+					"y": 680,
 					"words": [
 						"cucumbers",
-						"cucumber"
+						"cucumber",
 					]
 				},
 				{
-					"x": 200,
-					"y": 1000,
+					"x": 600,
+					"y": 675,
 					"words": [
 						"tomato",
 						"tomatoes",
@@ -80,10 +80,26 @@
 					]
 				},
 				{
+					"x": 790,
+					"y": 525,
+					"words": [
+						"broccoli",
+					]
+				},
+
+								{
 					"x": 1300,
 					"y": 1000,
 					"words": [
-						"broccoli",
+						"strawberry",
+						"strawberries",
+					]
+				},
+								{
+					"x": 1300,
+					"y": 1000,
+					"words": [
+						"pear",
 					]
 				}
 			]

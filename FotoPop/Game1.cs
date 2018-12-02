@@ -135,7 +135,7 @@ namespace FotoPop
             // load high scores
             loadHighScores();
 
-            loadLevel("City");
+            loadLevel("Market");
             //loadLevel("Nature");
             //loadLevel("City");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
