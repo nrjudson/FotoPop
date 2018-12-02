@@ -4,18 +4,25 @@
     {
       "levelName": "City",
       "highScores": {
-        "Mary": 401.21,
-        "Billy": 398.09
+        "MARY": 401.21,
+        "THOMAS": 398.09,
+        "SARA": 743.88
       }
     },
     {
       "levelName": "Nature",
       "highScores": {
+        "JON": 401.21,
+        "NOAH": 398.09,
+        "RAQUEL": 567.00
       }
     },
     {
       "levelName": "Market",
       "highScores": {
+        "JUAN": 401.21,
+        "MIGUEL": 398.09,
+        "ANGEL": 23.21
       }
     }
   ]

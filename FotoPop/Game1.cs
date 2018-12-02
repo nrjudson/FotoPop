@@ -36,7 +36,7 @@ namespace FotoPop
 
         float maxPointsPerWord = 100;
 
-        string yourName = "Bob";
+        string yourName = "BOB";
         float score = 0;
 
         bool newLevelLoaded = false;
@@ -314,7 +314,7 @@ namespace FotoPop
                         {
                             if (yourName.Equals(""))
                             {
-                                yourName = "Bob";
+                                yourName = "BOB";
                             }
                             enteringName = false;
                             elapsedTimeForLevel = 0.0f;
