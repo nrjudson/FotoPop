@@ -53,6 +53,9 @@ namespace FotoPop
         // High Scores: LevelName -> Map of high scores
         private Dictionary<string, Dictionary<string, float>> highScores;
 
+        bool selectingLevel = false;
+        bool enteringName = false;
+        int levelIndex = 0;
 
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
@@ -157,6 +160,8 @@ namespace FotoPop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //if ()
+
             // Grab the time difference
             elapsedTimeForLevel += gameTime.GetElapsedSeconds();
             elapsedTimeForWord += gameTime.GetElapsedSeconds();
@@ -319,18 +324,36 @@ namespace FotoPop
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-
             spriteBatch.Begin();
 
             // Draw Game Name
             Vector2 gameNameLoc = new Vector2(0.01f * screenRect.Width, 0.03f * screenRect.Height);
             spriteBatch.DrawString(title, gameName, gameNameLoc, Color.White);
 
+            if (selectingLevel)
+            {
+                drawLevelSelection(gameTime);
+            }
+            else if (enteringName)
+            {
+                drawEnterName(gameTime);
+            }
+            else
+            {
+                drawGame(gameTime);
+            }
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
+
+        private void drawGame(GameTime gameTime)
+        {
+
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
-
-
 
             // Draw the rectangle that shows how much time is left in the level
             Rectangle outerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), photoRect.Width, (int)(0.03f * screenRect.Height));
@@ -338,7 +361,7 @@ namespace FotoPop
 
             float proportionTimeLeft = timeLeftForLevel / timeForLevel;
             Rectangle innerTimeRect = new Rectangle(photoRect.X, (int)(0.04f * screenRect.Height), (int)(photoRect.Width * proportionTimeLeft), (int)(0.03f * screenRect.Height));
-         
+
             Color colorForTime;
             if (proportionTimeLeft > 0.5f)
                 colorForTime = Color.Green;
@@ -374,18 +397,41 @@ namespace FotoPop
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourInput, new Vector2(textRect.X, textRect.Y), Color.White);
 
-            
+
             // Draw the circle that goes over the photo
             spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
 
             // Draw the score
             Vector2 scoreLoc = new Vector2(0.01f * screenRect.Width, 0.2f * screenRect.Height);
             spriteBatch.DrawString(sm, "Score: " + ((int)(score)).ToString(), scoreLoc, Color.White);
-
-            spriteBatch.End();
-
-            base.Draw(gameTime);
         }
+
+
+        private void drawLevelSelection(GameTime gameTime)
+        {
+            // Draw Instructions
+            Vector2 instructionsLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
+            spriteBatch.DrawString(title, "Select your level", instructionsLoc, Color.White);
+
+            Vector2 levelLoc = new Vector2(0.4f * screenRect.Width, 0.3f * screenRect.Height);
+            spriteBatch.DrawString(title, "City", levelLoc, Color.White);
+
+            levelLoc = new Vector2(0.4f * screenRect.Width, 0.4f * screenRect.Height);
+            spriteBatch.DrawString(title, "Nature", levelLoc, Color.White);
+
+            levelLoc = new Vector2(0.4f * screenRect.Width, 0.5f * screenRect.Height);
+            spriteBatch.DrawString(title, "Market", levelLoc, Color.White);
+
+            levelLoc = new Vector2(0.4f * screenRect.Width, 0.6f * screenRect.Height);
+            spriteBatch.DrawString(title, "Verbs", levelLoc, Color.White);
+        }
+
+
+        private void drawEnterName(GameTime gameTime)
+        {
+
+        }
+
 
 
         /// <summary>
