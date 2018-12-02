@@ -1,0 +1,92 @@
+﻿{
+	"levelName": "Market",
+	"photos": [
+		{
+			"photo": "market",
+			"objectives": 
+			[
+				{
+					"x": 1100,
+					"y": 625,
+					"words": [
+					    "cashier",
+						"woman",
+						"employee"
+					]
+				},
+				{
+					"x": 820,
+					"y": 770,
+					"words": [
+						"register",
+						"moneypit"
+						
+					]
+				},
+				{
+					"x": 650,
+					"y": 555,
+					"words": [
+						"customer",
+						"client"
+
+					]
+				},
+				{
+					"x": 875,
+					"y": 1260,
+					"words": [
+						"chocolate",
+						"candy"
+					]
+				},
+						{
+					"x": 980,
+					"y": 540,
+					"words": [
+						"cigarettes",
+						"cigars",
+					]
+				},
+						{
+					"x": 400,
+					"y": 475,
+					"words": [
+						"sodas",
+						"drinks",
+					]
+				}
+			]
+		},
+		{
+			"photo": "aisles",
+			"objectives": 
+			[
+				{
+					"x": 1500,
+					"y": 700,
+					"words": [
+						"cucumbers",
+						"cucumber"
+					]
+				},
+				{
+					"x": 200,
+					"y": 1000,
+					"words": [
+						"tomato",
+						"tomatoes",
+
+					]
+				},
+				{
+					"x": 1300,
+					"y": 1000,
+					"words": [
+						"broccoli",
+					]
+				}
+			]
+		}
+	]
+}
