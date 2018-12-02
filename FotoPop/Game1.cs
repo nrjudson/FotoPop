@@ -544,7 +544,7 @@ namespace FotoPop
             spriteBatch.FillRectangle(innerTimeRect, colorForTime);
             // Draw time left for level text
             spriteBatch.DrawString(sm, "Level Over In:", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .03f), Color.Black);
-            spriteBatch.DrawString(sm, timeLeftForLevel.ToString() + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .1f), Color.Black);
+            spriteBatch.DrawString(sm, String.Format("{0:0.00}", timeLeftForLevel) + " seconds", new Vector2(photoRect.X + photoRect.Width + .04f * screenRect.Width, screenRect.Height * .1f), Color.Black);
 
 
             // Draw the time left for the word
@@ -581,7 +581,7 @@ namespace FotoPop
             foreach(string correctAnswer in correctAnswers)
             {
                 correctAnswerLocY += (int)(.06f * screenRect.Height);
-                spriteBatch.DrawString(sm, correctAnswer, new Vector2(correctAnswerLocX, correctAnswerLocY), Color.White);
+                spriteBatch.DrawString(title, correctAnswer, new Vector2(correctAnswerLocX, correctAnswerLocY), Color.Green);
             }
         }
 
