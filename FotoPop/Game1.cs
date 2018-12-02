@@ -334,42 +334,22 @@ namespace FotoPop
             timeLeftForLevel = timeForLevel - elapsedTimeForLevel;
             timeLeftForWord = timeForWord - elapsedTimeForWord;
 
+            if (timeLeftForLevel < 0)
+            {
+                seeingHighScore = true;
+                return;
+            }
+            if (timeLeftForWord < 0)
+            {
+
+            }
+
             // Esc is exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
-
-            // If they hit Tab, move to the City level
-            if (state.IsKeyDown(Keys.Tab))
-            {
-                //Game1 g = new Game1();
-                //GameStateManager gms = new GameStateManager();
-                //gms.getLevel(1).LoadContent();
-            }
-
-            //if (state.IsKeyDown(Keys.NumPad0))
-            //{
-            //    currentPhotoIndex = 0;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
-            //if (state.IsKeyDown(Keys.NumPad1))
-            //{
-            //    currentPhotoIndex = 1;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
-            //if (state.IsKeyDown(Keys.NumPad2))
-            //{
-            //    currentPhotoIndex = 2;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
 
             // Text entry
             Keys[] keys = state.GetPressedKeys();
@@ -619,6 +599,8 @@ namespace FotoPop
         {
             Vector2 yourScoreLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
             spriteBatch.DrawString(title, "Your Score: " + ((int)score).ToString(), yourScoreLoc, Color.White);
+
+
 
             Vector2 exitInstructionLoc = new Vector2(0.3f * screenRect.Width, 0.8f * screenRect.Height);
             spriteBatch.DrawString(sm, "Press space to exit", exitInstructionLoc, Color.White);
