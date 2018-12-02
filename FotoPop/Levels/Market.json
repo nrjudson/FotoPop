@@ -6,8 +6,8 @@
 			"objectives": 
 			[
 				{
-					"x": 1100,
-					"y": 625,
+					"x": 1112,
+					"y": 618,
 					"words": [
 					    "cashier",
 						"woman",
@@ -15,8 +15,8 @@
 					]
 				},
 				{
-					"x": 820,
-					"y": 770,
+					"x": 944,
+					"y": 746,
 					"words": [
 						"register",
 						"moneypit"
@@ -24,8 +24,8 @@
 					]
 				},
 				{
-					"x": 650,
-					"y": 555,
+					"x": 688,
+					"y": 614,
 					"words": [
 						"customer",
 						"client"
@@ -33,7 +33,7 @@
 					]
 				},
 				{
-					"x": 875,
+					"x": 900,
 					"y": 1260,
 					"words": [
 						"chocolate",
@@ -41,19 +41,19 @@
 					]
 				},
 						{
-					"x": 980,
-					"y": 540,
+					"x": 1340,
+					"y": 664,
 					"words": [
 						"cigarettes",
 						"cigars",
 					]
 				},
 						{
-					"x": 400,
-					"y": 475,
+					"x": 272,
+					"y": 520,
 					"words": [
-						"sodas",
-						"drinks",
+						"soda",
+						"drink",
 					]
 				}
 			]
@@ -63,16 +63,16 @@
 			"objectives": 
 			[
 				{
-					"x": 350,
-					"y": 620,
+					"x": 482,
+					"y": 644,
 					"words": [
 						"cucumbers",
 						"cucumber",
 					]
 				},
 				{
-					"x": 600,
-					"y": 605,
+					"x": 152,
+					"y": 566,
 					"words": [
 						"tomato",
 						"tomatoes",
@@ -80,26 +80,27 @@
 					]
 				},
 				{
-					"x": 760,
-					"y": 505,
+					"x": 782,
+					"y": 560,
 					"words": [
 						"broccoli",
 					]
 				},
 
 								{
-					"x": 1250,
-					"y": 250,
+					"x": 1238,
+					"y": 242,
 					"words": [
 						"strawberry",
 						"strawberries",
 					]
 				},
 								{
-					"x": 1250,
-					"y": 100,
+					"x": 1253,
+					"y": 137,
 					"words": [
 						"pear",
+						"lemon",
 					]
 				}
 			]
