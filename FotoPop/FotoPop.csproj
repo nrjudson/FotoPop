@@ -116,6 +116,9 @@
     <None Include="Levels\HighScores.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Levels\Market.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Levels\Nature.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
