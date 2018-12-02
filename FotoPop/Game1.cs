@@ -34,22 +34,29 @@ namespace FotoPop
         string yourInput = "Start typing!";
         bool neverTyped = true;
 
-        int score = 0;
+        float maxPointsPerWord = 100;
+
+        string yourName = "Bob";
+        float score = 0;
 
         bool newLevelLoaded = false;
         int currentPhotoIndex = 0;
         int currentObjectiveIndex = 0;
-        float timeForLevel = 45.0f;
-        float timeForWord = 10.0F;
+        static float timeForLevel = 45.0f;
+        static float timeForWord = 10.0F;
         float elapsedTimeForLevel = 0.0f;
         float elapsedTimeForWord = 0.0f;
         float timeLeftForLevel = 1.0f;
         float timeLeftForWord = 1.0f;
 
 
+        // High Scores: LevelName -> Map of high scores
+        private Dictionary<string, Dictionary<string, float>> highScores;
+
+
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
-        string gameName = "PhotoPop";
+        static string gameName = "PhotoPop";
 
         class Level
         {
@@ -120,7 +127,10 @@ namespace FotoPop
             title = this.Content.Load<SpriteFont>("Fonts/title");
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
 
-            loadLevel("Market");
+            // load high scores
+            loadHighScores();
+
+            loadLevel("City");
             //loadLevel("Nature");
             //loadLevel("City");
             photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
@@ -226,6 +236,11 @@ namespace FotoPop
                             lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
                         }
                     }
+                    if (key == Keys.Space)
+                    {
+                        yourInput += " ";
+                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                    }
                 }
             }
         
@@ -240,6 +255,8 @@ namespace FotoPop
                     {
                         // The word is correct. Advance to the next word (objective).
                         currentObjectiveIndex++;
+                        // Update your score
+                        score += (timeLeftForWord / timeForWord) * maxPointsPerWord;
                         // Reset the prompt
                         yourInput = "";
                         // Set new word timer
@@ -257,9 +274,7 @@ namespace FotoPop
                                 if (level.name.Equals("Nature"))
                                     loadLevel("City");
                                 else if (level.name.Equals("City"))
-                                {
                                     loadLevel("Nature");
-                                }
                                 // Set new level timer? 
                                 elapsedTimeForLevel = 0.0f;
                             }
@@ -308,8 +323,9 @@ namespace FotoPop
 
             spriteBatch.Begin();
 
-            //Draw Game Name
-            spriteBatch.DrawString(title, gameName, new Vector2(100, photoRect.Height *.05f), Color.White);
+            // Draw Game Name
+            Vector2 gameNameLoc = new Vector2(0.01f * screenRect.Width, 0.03f * screenRect.Height);
+            spriteBatch.DrawString(title, gameName, gameNameLoc, Color.White);
 
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
@@ -362,6 +378,10 @@ namespace FotoPop
             // Draw the circle that goes over the photo
             spriteBatch.DrawCircle(getCircle(level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].x, level.photos[currentPhotoIndex].objectives[currentObjectiveIndex].y), 100, Color.White, 10);
 
+            // Draw the score
+            Vector2 scoreLoc = new Vector2(0.01f * screenRect.Width, 0.2f * screenRect.Height);
+            spriteBatch.DrawString(sm, "Score: " + ((int)(score)).ToString(), scoreLoc, Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -384,6 +404,52 @@ namespace FotoPop
             int newY = (int)(photoScale * origY) + photoRect.Y;
             
             return new CircleF(new Point2(newX, newY), radius);
+        }
+
+
+        private void loadHighScores()
+        {
+            // Open the file to read
+            using (StreamReader r = new StreamReader("Levels/highScores.json"))
+            {
+                string json = r.ReadToEnd();
+                JObject fileJson = (JObject)JsonConvert.DeserializeObject(json);
+
+                highScores = new Dictionary<string, Dictionary<string, float>>();
+
+                JArray highScoreLevelList = (JArray)fileJson.GetValue("highScores");
+
+                // Iterate over the levels
+                using (var highScoresLevelEnum = highScoreLevelList.GetEnumerator())
+                {
+                    while (highScoresLevelEnum.MoveNext())
+                    {
+                        Dictionary<string, float> highScoresForLevel = new Dictionary<string, float>();
+                        
+                        JObject highScoresLevel = (JObject)highScoresLevelEnum.Current;
+
+                        string levelName = (string)highScoresLevel.GetValue("levelName");
+
+                        object thisLevelsScoresJson2 = highScoresLevel.GetValue("highScores");
+
+                        JObject thisLevelsScoresJson = (JObject)highScoresLevel.GetValue("highScores");
+
+                        // Iterate over the high scores in this level
+                        using (var scoresEnum = thisLevelsScoresJson.GetEnumerator())
+                        {
+                            while (scoresEnum.MoveNext())
+                            {
+                                KeyValuePair<string, JToken> nameAndScore = (KeyValuePair<string, JToken>) scoresEnum.Current;
+                                string name = nameAndScore.Key;
+                                float score = (float) nameAndScore.Value;
+                                highScoresForLevel.Add(name, score);
+                            }
+                        }
+
+                        highScores.Add(levelName, highScoresForLevel);
+                    }
+                }
+            }
         }
 
 

@@ -1,0 +1,22 @@
+﻿{
+  "highScores": 
+  [
+    {
+      "levelName": "City",
+      "highScores": {
+        "Mary": 401.21,
+        "Billy": 398.09
+      }
+    },
+    {
+      "levelName": "Nature",
+      "highScores": {
+      }
+    },
+    {
+      "levelName": "Market",
+      "highScores": {
+      }
+    }
+  ]
+}
