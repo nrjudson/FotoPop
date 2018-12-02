@@ -628,21 +628,36 @@ namespace FotoPop
             Vector2 yourScoreLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
             spriteBatch.DrawString(title, "Your Score: " + ((int)score).ToString(), yourScoreLoc, Color.White);
 
+            // Sort the scores in highest order
+            List<KeyValuePair<string, float>> sortedScoresList = new List<KeyValuePair<string, float>>();
+            List<string> highScoreKeys = new List<string>();
+            for (int i=0; i<highScores[level.name].Count; i++)
+            {
+                float highestScore = 0f;
+                KeyValuePair<string, float> highestScorePair = new KeyValuePair<string, float>();
+                
+                foreach (KeyValuePair<string, float> scorePair in highScores[level.name])
+                {
+                    if (scorePair.Value > highestScore && !highScoreKeys.Contains(scorePair.Key))
+                    {
+                        highestScore = scorePair.Value;
+                        highestScorePair = scorePair;
+                    }
+                }
 
+                highScoreKeys.Add(highestScorePair.Key);
+                sortedScoresList.Add(highestScorePair);
+            }
 
-            //highScores[level.name][yourName];
+            // Print the scores
             int scoreListX = (int)(0.3f * screenRect.Width);
             int scoreListY = (int)(0.17f * screenRect.Height);
-            List<KeyValuePair<string, float>> sortedScoresList = new List<KeyValuePair<string, float> >();
-            foreach (KeyValuePair<string, float> scorePair in highScores[level.name])
-            {
-                sortedScoresList.Insert(0, scorePair);
-            }
             foreach (KeyValuePair<string, float> scorePair in sortedScoresList)
             {
                 scoreListY += (int)(0.06f * screenRect.Height);
                 spriteBatch.DrawString(title, scorePair.Key + ": " + (int)scorePair.Value, new Vector2(scoreListX, scoreListY), Color.Green);
             }
+
 
             Vector2 exitInstructionLoc = new Vector2(0.3f * screenRect.Width, 0.8f * screenRect.Height);
             spriteBatch.DrawString(sm, "Press space to exit", exitInstructionLoc, Color.White);
