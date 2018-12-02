@@ -55,9 +55,11 @@ namespace FotoPop
         // High Scores: LevelName -> Map of high scores
         private Dictionary<string, Dictionary<string, float>> highScores;
 
-        bool selectingLevel = false;
+        bool selectingLevel = true;
         bool enteringName = false;
+        bool seeingHighScore = false;
         int levelIndex = 0;
+        int numLevels = 4;
 
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
@@ -162,8 +164,169 @@ namespace FotoPop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //if ()
+            if (enteringName)
+            {
+                updateEnterName(gameTime);
+            }
+            else if (selectingLevel)
+            {
+                updateSelectLevel(gameTime);
+            }
+            else if (seeingHighScore)
+            {
+                updateSeeingHighScore(gameTime);
+            }
+            else
+            {
+                updateGame(gameTime);
+            }
+            
+            base.Update(gameTime);
+        }
 
+
+        private void updateSeeingHighScore(GameTime gameTime)
+        {
+            float now = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            KeyboardState state = Keyboard.GetState();
+
+            // If they hit Tab, move to the City level
+            if (state.IsKeyDown(Keys.Space))
+            {
+                selectingLevel = true;
+                seeingHighScore = false;
+                score = 0.0f;
+            }
+        }
+
+
+        private void updateSelectLevel(GameTime gameTime)
+        {
+            float now = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            float secondsBetweenLetters = 0.16f;
+
+            // Check all key presses
+            if (now > lastKeyPressTime + secondsBetweenLetters)
+            {
+                // Poll for current keyboard state
+                KeyboardState state = Keyboard.GetState();
+
+                // If they hit Tab, move to the City level
+                if (state.IsKeyDown(Keys.Up))
+                {
+                    levelIndex--;
+                    lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+
+                }
+                else if (state.IsKeyDown(Keys.Down))
+                {
+                    levelIndex++;
+                    lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                }
+                if (levelIndex < 0)
+                {
+                    levelIndex = numLevels - 1;
+                }
+                else if (levelIndex > numLevels - 1)
+                {
+                    levelIndex = 0;
+                }
+
+                if (state.IsKeyDown(Keys.Enter))
+                {
+                    if (levelIndex == 0)
+                    {
+                        loadLevel("City");
+                    }
+                    else if (levelIndex == 1)
+                    {
+                        loadLevel("Nature");
+                    }
+                    else if (levelIndex == 2)
+                    {
+                        loadLevel("Market");
+                    }
+                    else if (levelIndex == 3)
+                    {
+                        loadLevel("Verbs");
+                    }
+                    // Show and load the new photo
+                    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                    setAndScalePhoto(photo);
+
+                    enteringName = true;
+                    selectingLevel = false;
+                    lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                }
+            }
+        }
+
+
+        private void updateEnterName(GameTime gameTime)
+        {
+            float now = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            float secondsBetweenLetters = 0.16f;
+
+            // Check all key presses
+            if (now > lastKeyPressTime + secondsBetweenLetters)
+            {
+                // Poll for current keyboard state
+                KeyboardState state = Keyboard.GetState();
+
+                Keys[] keys = state.GetPressedKeys();
+                if (keys.Length > 0)
+                {
+                    if (neverTyped)
+                    {
+                        yourName = "";
+                    }
+                    neverTyped = false;
+                }
+
+                // Check all key presses
+                if (now > lastKeyPressTime + secondsBetweenLetters)
+                {
+                    foreach (Keys key in keys)
+                    {
+                        // Is the key pressed a letter?
+                        if (key >= Keys.A && key <= Keys.Z)
+                        {
+                            yourName += key;
+                            lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        }
+                        if (key == Keys.Back)
+                        {
+                            if (yourName.Length > 0)
+                            {
+                                yourName = yourName.Substring(0, yourName.Length - 1);
+                                lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                            }
+                        }
+                        if (key == Keys.Space)
+                        {
+                            yourName += " ";
+                            lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        }
+                        if (key == Keys.Enter)
+                        {
+                            enteringName = false;
+                            elapsedTimeForLevel = 0.0f;
+                            score = 0.0f;
+                            neverTyped = true;
+                            lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+        private void updateGame(GameTime gameTime)
+        {
             // Grab the time difference
             elapsedTimeForLevel += gameTime.GetElapsedSeconds();
             elapsedTimeForWord += gameTime.GetElapsedSeconds();
@@ -186,27 +349,27 @@ namespace FotoPop
                 //gms.getLevel(1).LoadContent();
             }
 
-            if (state.IsKeyDown(Keys.NumPad0))
-            {
-                currentPhotoIndex = 0;
+            //if (state.IsKeyDown(Keys.NumPad0))
+            //{
+            //    currentPhotoIndex = 0;
 
-                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                setAndScalePhoto(photo);
-            }
-            if (state.IsKeyDown(Keys.NumPad1))
-            {
-                currentPhotoIndex = 1;
+            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+            //    setAndScalePhoto(photo);
+            //}
+            //if (state.IsKeyDown(Keys.NumPad1))
+            //{
+            //    currentPhotoIndex = 1;
 
-                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                setAndScalePhoto(photo);
-            }
-            if (state.IsKeyDown(Keys.NumPad2))
-            {
-                currentPhotoIndex = 2;
+            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+            //    setAndScalePhoto(photo);
+            //}
+            //if (state.IsKeyDown(Keys.NumPad2))
+            //{
+            //    currentPhotoIndex = 2;
 
-                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                setAndScalePhoto(photo);
-            }
+            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+            //    setAndScalePhoto(photo);
+            //}
 
             // Text entry
             Keys[] keys = state.GetPressedKeys();
@@ -220,7 +383,7 @@ namespace FotoPop
             }
 
 
-            float now = (float) gameTime.TotalGameTime.TotalSeconds;
+            float now = (float)gameTime.TotalGameTime.TotalSeconds;
 
             float secondsBetweenLetters = 0.16f;
 
@@ -250,7 +413,7 @@ namespace FotoPop
                     }
                 }
             }
-        
+
 
             // Check if the word is correct every 100 ms
             float secondsBetweenWordChecks = 0.1f;
@@ -274,21 +437,24 @@ namespace FotoPop
                         {
                             currentObjectiveIndex = 0;
                             currentPhotoIndex++;
-                            // See if there are no more photos, so go back to the first photo 
+                            // See if there are no more photos, go to see high scores
                             if (currentPhotoIndex >= level.photos.Count)
                             {
-                                //////////////////////////////////////////////////////////////////////////////////////TODO here this should go back to level selection or show your score compared to others
-                                currentPhotoIndex = 0;
-                                if (level.name.Equals("Nature"))
-                                    loadLevel("City");
-                                else if (level.name.Equals("City"))
-                                    loadLevel("Nature");
-                                // Set new level timer? 
-                                elapsedTimeForLevel = 0.0f;
+                                //currentPhotoIndex = 0;
+                                //if (level.name.Equals("Nature"))
+                                //    loadLevel("City");
+                                //else if (level.name.Equals("City"))
+                                //    loadLevel("Nature");
+                                //// Set new level timer? 
+                                //elapsedTimeForLevel = 0.0f;
+                                seeingHighScore = true;
                             }
-                            // Show and load the new photo
-                            photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                            setAndScalePhoto(photo);
+                            else
+                            {
+                                // Show and load the new photo
+                                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                                setAndScalePhoto(photo);
+                            }
                         }
                     }
                     
@@ -314,10 +480,6 @@ namespace FotoPop
                     }
                 }
             }
-            
-
-
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -341,6 +503,10 @@ namespace FotoPop
             else if (enteringName)
             {
                 drawEnterName(gameTime);
+            }
+            else if (seeingHighScore)
+            {
+                drawSeeingHighScore(gameTime);
             }
             else
             {
@@ -429,12 +595,33 @@ namespace FotoPop
 
             levelLoc = new Vector2(0.4f * screenRect.Width, 0.6f * screenRect.Height);
             spriteBatch.DrawString(title, "Verbs", levelLoc, Color.White);
+
+            float levelBoxY = (0.27f + (0.1f * levelIndex)) * screenRect.Height;
+            Rectangle selectedLevelBox = new Rectangle((int)(0.34f * screenRect.Width), (int)levelBoxY, (int)(screenRect.Width * 0.35f), (int)(0.15f * screenRect.Height));
+            spriteBatch.DrawRectangle(selectedLevelBox, Color.White, 5);
         }
 
 
         private void drawEnterName(GameTime gameTime)
         {
+            // Draw Instructions
+            Vector2 instructionsLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
+            spriteBatch.DrawString(title, "Enter your name", instructionsLoc, Color.White);
 
+            // Draw the text entry
+            textRect = new Rectangle(photoRect.X, photoRect.Y + photoRect.Height + (int)(0.07f * screenRect.Height), photoRect.Width, (int)(0.05f * screenRect.Height));
+            spriteBatch.FillRectangle(textRect, Color.Black);
+            spriteBatch.DrawString(title, yourName, new Vector2(textRect.X, textRect.Y), Color.White);
+        }
+
+
+        private void drawSeeingHighScore(GameTime gameTime)
+        {
+            Vector2 yourScoreLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
+            spriteBatch.DrawString(title, "Your Score: " + ((int)score).ToString(), yourScoreLoc, Color.White);
+
+            Vector2 exitInstructionLoc = new Vector2(0.3f * screenRect.Width, 0.8f * screenRect.Height);
+            spriteBatch.DrawString(sm, "Press space to exit", exitInstructionLoc, Color.White);
         }
 
 
@@ -568,6 +755,8 @@ namespace FotoPop
                 }
             }
 
+            currentPhotoIndex = 0;
+            currentObjectiveIndex = 0;
             newLevelLoaded = true;
             
         }
