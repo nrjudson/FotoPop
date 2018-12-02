@@ -50,9 +50,13 @@ namespace FotoPop
         float timeLeftForWord = 1.0f;
 
 
+        // High Scores: LevelName -> Map of high scores
+        private Dictionary<string, Dictionary<string, float>> highScores;
+
+
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
-        string gameName = "PhotoPop";
+        static string gameName = "PhotoPop";
 
         class Level
         {
@@ -122,6 +126,9 @@ namespace FotoPop
             // Load font
             title = this.Content.Load<SpriteFont>("Fonts/title");
             sm = this.Content.Load<SpriteFont>("Fonts/sm");
+
+            // load high scores
+            loadHighScores();
 
             loadLevel("City");
             //loadLevel("Nature");
@@ -227,6 +234,11 @@ namespace FotoPop
                             yourInput = yourInput.Substring(0, yourInput.Length - 1);
                             lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
                         }
+                    }
+                    if (key == Keys.Space)
+                    {
+                        yourInput += " ";
+                        lastKeyPressTime = (float)(gameTime.TotalGameTime.TotalSeconds);
                     }
                 }
             }
@@ -391,6 +403,52 @@ namespace FotoPop
             int newY = (int)(photoScale * origY) + photoRect.Y;
             
             return new CircleF(new Point2(newX, newY), radius);
+        }
+
+
+        private void loadHighScores()
+        {
+            // Open the file to read
+            using (StreamReader r = new StreamReader("Levels/highScores.json"))
+            {
+                string json = r.ReadToEnd();
+                JObject fileJson = (JObject)JsonConvert.DeserializeObject(json);
+
+                highScores = new Dictionary<string, Dictionary<string, float>>();
+
+                JArray highScoreLevelList = (JArray)fileJson.GetValue("highScores");
+
+                // Iterate over the levels
+                using (var highScoresLevelEnum = highScoreLevelList.GetEnumerator())
+                {
+                    while (highScoresLevelEnum.MoveNext())
+                    {
+                        Dictionary<string, float> highScoresForLevel = new Dictionary<string, float>();
+                        
+                        JObject highScoresLevel = (JObject)highScoresLevelEnum.Current;
+
+                        string levelName = (string)highScoresLevel.GetValue("levelName");
+
+                        object thisLevelsScoresJson2 = highScoresLevel.GetValue("highScores");
+
+                        JObject thisLevelsScoresJson = (JObject)highScoresLevel.GetValue("highScores");
+
+                        // Iterate over the high scores in this level
+                        using (var scoresEnum = thisLevelsScoresJson.GetEnumerator())
+                        {
+                            while (scoresEnum.MoveNext())
+                            {
+                                KeyValuePair<string, JToken> nameAndScore = (KeyValuePair<string, JToken>) scoresEnum.Current;
+                                string name = nameAndScore.Key;
+                                float score = (float) nameAndScore.Value;
+                                highScoresForLevel.Add(name, score);
+                            }
+                        }
+
+                        highScores.Add(levelName, highScoresForLevel);
+                    }
+                }
+            }
         }
 
 
