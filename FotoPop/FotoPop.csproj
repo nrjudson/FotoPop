@@ -110,18 +110,100 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.manifest" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Fonts\sm.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Fonts\title.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\City\Photos\park.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\City\Photos\train.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\Market\Photos\aisles.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\Market\Photos\market.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\Nature\Photos\beach.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\Nature\Photos\nature.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\Levels\Nature\Photos\winter.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Content\selfie.xnb" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Levels\City.json" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Levels\Market.json" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\Levels\Nature.json" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\libopenal.1.dylib" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\libSDL2-2.0.0.dylib" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Framework.dll.config" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\x64\libopenal.so.1" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\x64\libSDL2-2.0.so.0" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\x86\libopenal.so.1" />
+    <None Include="bin\DesktopGL\AnyCPU\Debug\x86\libSDL2-2.0.so.0" />
+    <None Include="Content\bin\DesktopGL\Content\Fonts\sm.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Fonts\title.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\City\Photos\park.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\City\Photos\train.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\Market\Photos\aisles.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\Market\Photos\market.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\Nature\Photos\beach.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\Nature\Photos\nature.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\Levels\Nature\Photos\winter.xnb" />
+    <None Include="Content\bin\DesktopGL\Content\selfie.xnb" />
+    <None Include="Content\bin\DesktopGL\Fonts\sm.xnb" />
+    <None Include="Content\bin\DesktopGL\Fonts\title.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\City\Photos\park.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\City\Photos\train.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\Market\Photos\aisles.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\Market\Photos\market.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\Nature\Photos\beach.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\Nature\Photos\nature.xnb" />
+    <None Include="Content\bin\DesktopGL\Levels\Nature\Photos\winter.xnb" />
+    <None Include="Content\bin\DesktopGL\selfie.xnb" />
+    <None Include="Content\bin\DesktopGL\Title.xnb" />
+    <None Include="Content\Fonts\sm.spritefont" />
     <None Include="Content\Fonts\title.spritefont">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Content\obj\DesktopGL\.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Fonts\font.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Fonts\sm.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Fonts\title.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\City\Photos\park.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\City\Photos\train.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\Market\Photos\aisles.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\Market\Photos\market.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\Nature\Photos\beach.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\Nature\Photos\nature.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\Levels\Nature\Photos\winter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Content\selfie.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Fonts\font.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Fonts\sm.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Fonts\title.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\City\Photos\park.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\City\Photos\train.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\Market\Photos\aisles.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\Market\Photos\market.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\Nature\Photos\beach.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\Nature\Photos\nature.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Levels\Nature\Photos\winter.mgcontent" />
+    <None Include="Content\obj\DesktopGL\selfie.mgcontent" />
+    <None Include="Content\obj\DesktopGL\Title.mgcontent" />
     <None Include="Levels\HighScores.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Levels\Market.json" />
     <None Include="Levels\Nature.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\FotoPop.exe" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\FotoPop.pdb" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Extended.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Extended.pdb" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Extended.xml" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Framework.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\x64\SDL2.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\x64\soft_oal.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\x86\SDL2.dll" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\x86\soft_oal.dll" />
+    <Content Include="Content\Levels\Nature\Photos\nature.jpg" />
+    <Content Include="Content\train.jpg" />
     <None Include="Levels\City.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -133,7 +215,11 @@
     <Content Include="Content\selfie.jpg" />
     <Content Include="Content\Levels\City\Photos\train.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="bin\DesktopGL\AnyCPU\Release\" />
+    <Folder Include="bin\DesktopGL\Content\" />
+    <Folder Include="Content\Levels\photos\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
