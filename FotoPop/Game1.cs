@@ -49,6 +49,8 @@ namespace FotoPop
         float timeLeftForLevel = 1.0f;
         float timeLeftForWord = 1.0f;
 
+        //List correctAnswers;
+
 
         // High Scores: LevelName -> Map of high scores
         private Dictionary<string, Dictionary<string, float>> highScores;
@@ -258,6 +260,7 @@ namespace FotoPop
                 {
                     if (yourInput.ToLower().Equals(word.ToLower()))
                     {
+                        
                         // The word is correct. Advance to the next word (objective).
                         currentObjectiveIndex++;
                         // Update your score
@@ -288,6 +291,7 @@ namespace FotoPop
                             setAndScalePhoto(photo);
                         }
                     }
+                    
                 }
                 lastWordCheckTime = now;
             }
@@ -404,6 +408,7 @@ namespace FotoPop
             // Draw the score
             Vector2 scoreLoc = new Vector2(0.01f * screenRect.Width, 0.2f * screenRect.Height);
             spriteBatch.DrawString(sm, "Score: " + ((int)(score)).ToString(), scoreLoc, Color.White);
+
         }
 
 
