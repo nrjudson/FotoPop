@@ -52,7 +52,7 @@ namespace FotoPop
 
         float lastKeyPressTime = 0.0f;
         float lastWordCheckTime = 0.0f;
-
+        string gameName = "PhotoPop";
 
         class Level
         {
@@ -309,6 +309,9 @@ namespace FotoPop
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
+
+            //Draw Game Name
+            spriteBatch.DrawString(title, gameName, new Vector2(100, photoRect.Height *.05f), Color.White);
 
             // Draw the photo
             spriteBatch.Draw(photo, photoRect, Color.White);
