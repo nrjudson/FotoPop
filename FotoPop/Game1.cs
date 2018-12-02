@@ -53,7 +53,7 @@ namespace FotoPop
 
 
         // High Scores: LevelName -> Map of high scores
-        private Dictionary<string, Dictionary<string, float>> highScores;
+        private Dictionary<string, SortedDictionary<string, float>> highScores;
 
         bool selectingLevel = true;
         bool enteringName = false;
@@ -312,6 +312,10 @@ namespace FotoPop
                         }
                         if (key == Keys.Enter)
                         {
+                            if (yourName.Equals(""))
+                            {
+                                yourName = "Bob";
+                            }
                             enteringName = false;
                             elapsedTimeForLevel = 0.0f;
                             score = 0.0f;
@@ -325,6 +329,27 @@ namespace FotoPop
         }
 
 
+        private void finishedLevel()
+        {
+            seeingHighScore = true;
+
+            // Update your high score
+            if (highScores[level.name].ContainsKey(yourName))
+            {
+                float yourPreviousHighScore = highScores[level.name][yourName];
+                if (score > yourPreviousHighScore)
+                {
+                    highScores[level.name].Remove(yourName);
+                    highScores[level.name].Add(yourName, score);
+                }
+            }
+            else
+            {
+                highScores[level.name].Add(yourName, score);
+            }
+        }
+
+
         private void updateGame(GameTime gameTime)
         {
             // Grab the time difference
@@ -334,42 +359,22 @@ namespace FotoPop
             timeLeftForLevel = timeForLevel - elapsedTimeForLevel;
             timeLeftForWord = timeForWord - elapsedTimeForWord;
 
+            if (timeLeftForLevel < 0)
+            {
+                finishedLevel();
+                return;
+            }
+            if (timeLeftForWord < 0)
+            {
+                updateToNextWord();
+            }
+
             // Esc is exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // Poll for current keyboard state
             KeyboardState state = Keyboard.GetState();
-
-            // If they hit Tab, move to the City level
-            if (state.IsKeyDown(Keys.Tab))
-            {
-                //Game1 g = new Game1();
-                //GameStateManager gms = new GameStateManager();
-                //gms.getLevel(1).LoadContent();
-            }
-
-            //if (state.IsKeyDown(Keys.NumPad0))
-            //{
-            //    currentPhotoIndex = 0;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
-            //if (state.IsKeyDown(Keys.NumPad1))
-            //{
-            //    currentPhotoIndex = 1;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
-            //if (state.IsKeyDown(Keys.NumPad2))
-            //{
-            //    currentPhotoIndex = 2;
-
-            //    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-            //    setAndScalePhoto(photo);
-            //}
 
             // Text entry
             Keys[] keys = state.GetPressedKeys();
@@ -425,45 +430,12 @@ namespace FotoPop
                     {
                         correctAnswers.Add(word);
                         // The word is correct. Advance to the next word (objective).
-                        currentObjectiveIndex++;
-                        // Update your score
-                        score += (timeLeftForWord / timeForWord) * maxPointsPerWord;
-                        // Reset the prompt
-                        yourInput = "";
-                        // Set new word timer
-                        elapsedTimeForWord = 0.0f;
-                        // See if we need to change the photo
-                        if (currentObjectiveIndex >= level.photos[currentPhotoIndex].objectives.Count)
-                        {
-                            currentObjectiveIndex = 0;
-                            currentPhotoIndex++;
-                            // See if there are no more photos, go to see high scores
-                            if (currentPhotoIndex >= level.photos.Count)
-                            {
-                                //currentPhotoIndex = 0;
-                                //if (level.name.Equals("Nature"))
-                                //    loadLevel("City");
-                                //else if (level.name.Equals("City"))
-                                //    loadLevel("Nature");
-                                //// Set new level timer? 
-                                //elapsedTimeForLevel = 0.0f;
-                                seeingHighScore = true;
-                            }
-                            else
-                            {
-                                // Show and load the new photo
-                                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                                setAndScalePhoto(photo);
-                            }
-                        }
+                        updateToNextWord();
                     }
                     
                 }
                 lastWordCheckTime = now;
             }
-
-
-
 
             if (newLevelLoaded)
             {
@@ -478,6 +450,34 @@ namespace FotoPop
                     {
                         timeForLevel += 5.0f;
                     }
+                }
+            }
+        }
+
+        private void updateToNextWord()
+        {
+            currentObjectiveIndex++;
+            // Update your score
+            score += (timeLeftForWord / timeForWord) * maxPointsPerWord;
+            // Reset the prompt
+            yourInput = "";
+            // Set new word timer
+            elapsedTimeForWord = 0.0f;
+            // See if we need to change the photo
+            if (currentObjectiveIndex >= level.photos[currentPhotoIndex].objectives.Count)
+            {
+                currentObjectiveIndex = 0;
+                currentPhotoIndex++;
+                // See if there are no more photos, go to see high scores
+                if (currentPhotoIndex >= level.photos.Count)
+                {
+                    finishedLevel();
+                }
+                else
+                {
+                    // Show and load the new photo
+                    photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                    setAndScalePhoto(photo);
                 }
             }
         }
@@ -628,6 +628,22 @@ namespace FotoPop
             Vector2 yourScoreLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
             spriteBatch.DrawString(title, "Your Score: " + ((int)score).ToString(), yourScoreLoc, Color.White);
 
+
+
+            //highScores[level.name][yourName];
+            int scoreListX = (int)(0.3f * screenRect.Width);
+            int scoreListY = (int)(0.17f * screenRect.Height);
+            List<KeyValuePair<string, float>> sortedScoresList = new List<KeyValuePair<string, float> >();
+            foreach (KeyValuePair<string, float> scorePair in highScores[level.name])
+            {
+                sortedScoresList.Insert(0, scorePair);
+            }
+            foreach (KeyValuePair<string, float> scorePair in sortedScoresList)
+            {
+                scoreListY += (int)(0.06f * screenRect.Height);
+                spriteBatch.DrawString(title, scorePair.Key + ": " + (int)scorePair.Value, new Vector2(scoreListX, scoreListY), Color.Green);
+            }
+
             Vector2 exitInstructionLoc = new Vector2(0.3f * screenRect.Width, 0.8f * screenRect.Height);
             spriteBatch.DrawString(sm, "Press space to exit", exitInstructionLoc, Color.White);
         }
@@ -661,7 +677,7 @@ namespace FotoPop
                 string json = r.ReadToEnd();
                 JObject fileJson = (JObject)JsonConvert.DeserializeObject(json);
 
-                highScores = new Dictionary<string, Dictionary<string, float>>();
+                highScores = new Dictionary<string, SortedDictionary<string, float>>();
 
                 JArray highScoreLevelList = (JArray)fileJson.GetValue("highScores");
 
@@ -670,7 +686,7 @@ namespace FotoPop
                 {
                     while (highScoresLevelEnum.MoveNext())
                     {
-                        Dictionary<string, float> highScoresForLevel = new Dictionary<string, float>();
+                        SortedDictionary<string, float> highScoresForLevel = new SortedDictionary<string, float>();
                         
                         JObject highScoresLevel = (JObject)highScoresLevelEnum.Current;
 
