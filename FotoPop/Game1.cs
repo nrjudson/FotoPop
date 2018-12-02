@@ -55,6 +55,7 @@ namespace FotoPop
 
         bool selectingLevel = true;
         bool enteringName = false;
+        bool seeingHighScore = false;
         int levelIndex = 0;
         int numLevels = 4;
 
@@ -169,12 +170,32 @@ namespace FotoPop
             {
                 updateSelectLevel(gameTime);
             }
+            else if (seeingHighScore)
+            {
+                updateSeeingHighScore(gameTime);
+            }
             else
             {
                 updateGame(gameTime);
             }
             
             base.Update(gameTime);
+        }
+
+
+        private void updateSeeingHighScore(GameTime gameTime)
+        {
+            float now = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            KeyboardState state = Keyboard.GetState();
+
+            // If they hit Tab, move to the City level
+            if (state.IsKeyDown(Keys.Space))
+            {
+                selectingLevel = true;
+                seeingHighScore = false;
+                score = 0.0f;
+            }
         }
 
 
@@ -413,21 +434,24 @@ namespace FotoPop
                         {
                             currentObjectiveIndex = 0;
                             currentPhotoIndex++;
-                            // See if there are no more photos, so go back to the first photo 
+                            // See if there are no more photos, go to see high scores
                             if (currentPhotoIndex >= level.photos.Count)
                             {
-                                //////////////////////////////////////////////////////////////////////////////////////TODO here this should go back to level selection or show your score compared to others
-                                currentPhotoIndex = 0;
-                                if (level.name.Equals("Nature"))
-                                    loadLevel("City");
-                                else if (level.name.Equals("City"))
-                                    loadLevel("Nature");
-                                // Set new level timer? 
-                                elapsedTimeForLevel = 0.0f;
+                                //currentPhotoIndex = 0;
+                                //if (level.name.Equals("Nature"))
+                                //    loadLevel("City");
+                                //else if (level.name.Equals("City"))
+                                //    loadLevel("Nature");
+                                //// Set new level timer? 
+                                //elapsedTimeForLevel = 0.0f;
+                                seeingHighScore = true;
                             }
-                            // Show and load the new photo
-                            photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
-                            setAndScalePhoto(photo);
+                            else
+                            {
+                                // Show and load the new photo
+                                photo = this.Content.Load<Texture2D>(getCurrentPhotoUri());
+                                setAndScalePhoto(photo);
+                            }
                         }
                     }
                 }
@@ -475,6 +499,10 @@ namespace FotoPop
             else if (enteringName)
             {
                 drawEnterName(gameTime);
+            }
+            else if (seeingHighScore)
+            {
+                drawSeeingHighScore(gameTime);
             }
             else
             {
@@ -579,6 +607,16 @@ namespace FotoPop
             textRect = new Rectangle(photoRect.X, photoRect.Y + photoRect.Height + (int)(0.07f * screenRect.Height), photoRect.Width, (int)(0.05f * screenRect.Height));
             spriteBatch.FillRectangle(textRect, Color.Black);
             spriteBatch.DrawString(title, yourName, new Vector2(textRect.X, textRect.Y), Color.White);
+        }
+
+
+        private void drawSeeingHighScore(GameTime gameTime)
+        {
+            Vector2 yourScoreLoc = new Vector2(0.3f * screenRect.Width, 0.1f * screenRect.Height);
+            spriteBatch.DrawString(title, "Your Score: " + ((int)score).ToString(), yourScoreLoc, Color.White);
+
+            Vector2 exitInstructionLoc = new Vector2(0.3f * screenRect.Width, 0.8f * screenRect.Height);
+            spriteBatch.DrawString(sm, "Press space to exit", exitInstructionLoc, Color.White);
         }
 
 
@@ -712,6 +750,8 @@ namespace FotoPop
                 }
             }
 
+            currentPhotoIndex = 0;
+            currentObjectiveIndex = 0;
             newLevelLoaded = true;
             
         }
